@@ -37,14 +37,14 @@ public class TIndividual {
 		return this;
 	}
 	
-	public void WriteTo(PrintWriter pw) {
+	public void writeTo(PrintWriter pw) {
 		pw.println(fEvaluate);
-		fvector.WriteTo(pw);
+		fvector.writeTo(pw);
 	}
 	
-	public void ReadFrom(BufferedReader br)  throws IOException{
+	public void readFrom(BufferedReader br)  throws IOException{
 		fEvaluate = Double.parseDouble(br.readLine());
-		fvector.ReadFrom(br);
+		fvector.readFrom(br);
 	}
 	
 	@Override
@@ -58,8 +58,8 @@ public class TIndividual {
 		fEvaluate = eval;
 	}
 	
-	public double getEvaluate(TIndividual src) {
-		return src.fEvaluate;
+	public double getEvaluate() {
+		return fEvaluate;
 	}
 	
 	public void setVector(TVector v) {
@@ -106,7 +106,7 @@ public class TIndividual {
 		System.out.println("src:" + src + "\n" + "src2:" + src2);
 		
 		src2.setEvaluate(3.0);
-		src2.setVector(src2.fvector.ScalorMul(2.0));
+		src2.setVector(src2.fvector.scalarMul(2.0));
 		System.out.println("src2 << Evaluate*3,Vector*2");
 		System.out.println("src:" + src + "\n" + "src2:" + src2); //浅いコピーなのでsrc,src2のベクトルが2倍される
 		
@@ -125,12 +125,12 @@ public class TIndividual {
 
 			//PrintWriterオブジェクトの生成
 			PrintWriter pw = new PrintWriter(bw);
-			src.WriteTo(pw);
+			src.writeTo(pw);
 			pw.close();
 			
 			//v2の内容をv1で書き換え
 			BufferedReader br = new BufferedReader(new FileReader(filename)); 
-			src2.ReadFrom(br); 
+			src2.readFrom(br); 
 			br.close(); 
 			System.out.println("\n" + "Test4");
 			System.out.println("src: "+ src + "\n" + "src2 :" + src2);

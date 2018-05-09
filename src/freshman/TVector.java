@@ -44,7 +44,7 @@ public class TVector {
 	}
 	
 	//書き出し
-	public void WriteTo(PrintWriter pw) {
+	public void writeTo(PrintWriter pw) {
 		pw.println(fData.length);
 		for(int i=0; i < fData.length; ++i) {
 			pw.print(fData[i] + " " );
@@ -53,7 +53,7 @@ public class TVector {
 	}
 	
 	//読み込み
-	public void ReadFrom(BufferedReader br) throws IOException{
+	public void readFrom(BufferedReader br) throws IOException{
 		int dimension = Integer.parseInt(br.readLine());
 		setDimension(dimension);
 		String [] tokens = br.readLine().split(" ");
@@ -125,32 +125,57 @@ public class TVector {
 	}
 	
 	//スカラー倍する
-	public TVector ScalorMul(double x) {
+	public TVector scalarMul(double x) {
 		for(int i=0; i < fData.length; ++i) {
 			fData[i] *= x;
 		}
 		return this;
 	}
 	
+	//要素同士の掛け算
+	public TVector calMul(TVector v) {
+		for(int i=0; i < fData.length; ++i) {
+			fData[i] *= v.fData[i];
+		}
+		return this;
+	}
+	
 	//ノルムの計算
-	public double calculateNorm(TVector v) {
+	public double calculateNorm() {
 		double norm = 0;
-		for(int i=0; i < v.fData.length; ++i) {
-			norm += Math.pow(v.fData[i],2); //2乗する
+		for(int i=0; i < fData.length; ++i) {
+			norm += Math.pow(fData[i],2); //2乗する
 		}
 		norm = Math.sqrt(norm); //ルート
 		return norm;
 	}
 	
 	//正規化
-	public TVector normalize(TVector v) {
+	public TVector normalize() {
 		double norm = 0;
-		norm = calculateNorm(v);
-		for(int i=0 ; i < v.fData.length; ++i) {
-			v.fData[i] /= norm; 
+		norm = this.calculateNorm();
+		for(int i=0 ; i < fData.length; ++i) {
+			fData[i] /= norm; 
 		}
 		return this;
 	}
+	
+	//内積計算
+	public double calInnerProduct(TVector v1, TVector v2) {
+		double innerProduct = 0;
+		for(int i=0; i < v1.fData.length; ++i) {
+			innerProduct += v1.fData[i] * v2.fData[i];
+		}
+		return innerProduct;
+	}
+	
+	
+	//外積計算
+	public double calOuterProduct(TVector v) {
+		
+		return 1.0;
+	}
+	
 	
 	
 	//メイン関数
@@ -193,10 +218,10 @@ public class TVector {
 		//加算・減算確認 ← v2加算後のv1からv2を減算しているのでv1に戻る
 		System.out.println("v1+v2: " + v1.add(v2) + ", v1-v2 :" + v1.subtract(v2));
 		//ついでにスカラー倍も確認
-		System.out.println("v1*5: " + v1.ScalorMul(5));
+		System.out.println("v1*5: " + v1.scalarMul(5));
 		//ノルム、正規化確認
-		System.out.println("v1_norm :" + v1.calculateNorm(v1) + ", v1_normalize :" + v1.normalize(v1));
-		System.out.println("v2_norm :" + v2.calculateNorm(v2) + ", v2_normalize :" + v2.normalize(v2));
+		System.out.println("v1_norm :" + v1.calculateNorm() + ", v1_normalize :" + v1.normalize());
+		System.out.println("v2_norm :" + v2.calculateNorm() + ", v2_normalize :" + v2.normalize());
 
 		System.out.println("\n" + "Test3");
 		
@@ -238,12 +263,12 @@ public class TVector {
 
 				//PrintWriterオブジェクトの生成
 				PrintWriter pw = new PrintWriter(bw);
-				v1.WriteTo(pw);
+				v1.writeTo(pw);
 				pw.close();
 				
 				//v2の内容をv1で書き換え
 				BufferedReader br = new BufferedReader(new FileReader(filename)); 
-				v2.ReadFrom(br); 
+				v2.readFrom(br); 
 				br.close(); 
 				System.out.println("v1: "+ v1 + ", v2 :" + v2);
 				
